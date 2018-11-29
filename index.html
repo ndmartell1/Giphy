@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Giphy</title>
+</head>
+<body>
+   
+  <div class="container">
+       <h1>Giphy</h1>
+
+       <div id="buttons-view"></div>
+
+       <form id="giphy-form">
+         <label for="giphy-input">Gif it a try!</label>
+         <input type="text" id="giphy-input"><br>
+
+         <input id="add-giphy" type="submit" value="Gif it a try!">
+    </form>
+
+    <div id="giphy-view"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+  
+  var cheeses = ["Mozzarella","Cheddar","Swiss","Gouda"];
+  
+  function displayCheeseGif () {
+    var cheese = $(this).attr("data-name");
+  var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ cheese+ "&limit=10&api_key=h7xqtYMZzpX7EuXivm5PajIDt0QSIaPg"
+   
+
+  
+  $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(function(response) {
+        
+          $("#giphy-view").text(JSON.stringify(response));
+        });
+}
+function renderButtons() {
+
+    $("#buttons-view").empty();
+
+      for (var i = 0; i < cheeses.length; i++) {
+        var a = $("<button>");
+                a.addClass("cheese");
+                a.attr("data-name", cheeses[i]);
+                a.text(cheeses[i]);
+                $("#buttons-view").append(a);
+        }
+      }
+      $("#add-giphy").on("click", function(event) {
+        event.preventDefault();
+
+        var cheese = $("#giphy-input").val().trim();
+        cheeses.push(cheese);
+        console.log(cheeses);
+
+         renderButtons();
+      });
+
+      $(document).on("click", ".cheese", displayCheeseGif);
+      renderButtons();
+        </script>
+</body>
+</html>
